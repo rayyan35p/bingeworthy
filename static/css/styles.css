@@ -1,0 +1,15 @@
+/* main color of background.*/
+.bg-black-2{  
+    background-color:#080808;
+}
+
+/*text color (red)*/
+.text-dark-red {
+    color:#B30000;
+    font-family: Garamond, serif;
+}
+/* background for the navbar*/
+.nav-bar-design {
+    top:0px; 
+    background:#141414;
+}
