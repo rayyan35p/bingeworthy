@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    {% for result in results %}
+        {% if result.media_type == "movie" %}
+            <a href="/movie/{{result.id}}"><img src={{result.poster_url}} alt="result"></a>
+        {% else %}
+            <a href="tv/{{result.id}}"><img src={{result.poster_url}} alt="result"></a>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
