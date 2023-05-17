@@ -61,7 +61,25 @@ def tv(id):
     payload = {'api_key' : '013394cc2a0b549c132a73bfc223372e'}
     r = requests.get('https://api.themoviedb.org/3/tv/' + str(id) , params=payload)
     tv_details = r.json()
-    return render_template('tv.html', tv_details=tv_details)
+    try:
+        # poster url
+        poster_url = "https://image.tmdb.org/t/p/w500" + tv_details.get('poster_path')        
+    except:
+        # placeholder url
+        poster_url = "https://image.tmdb.org/t/p/w500/w3rXpniqssYcppC5UwuQfP1scVB.jpg"
+
+    title = tv_details.get('name')
+    # first_air_date contains a string of year-month-day, 2001-01-01 eg
+    released_date = tv_details.get('first_air_date').split("-")[0]
+    sypnosis = tv_details.get('overview')
+    rating = tv_details.get('vote_average')
+    # tv_details.get('genres') returns a list of dictionaries : [ {genre1: action}, {genre2:drama}]
+    genre_list = tv_details.get('genres')
+    genres = ""
+    for items in genre_list:
+        genres = genres + items.get('name') + " "
+    return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,
+                           sypnosis = sypnosis, rating = rating, genres = genres)
 
 
 if __name__ == "__main__":
