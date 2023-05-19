@@ -1,3 +1,4 @@
+import config
 from flask import Flask, redirect, render_template, url_for, request
 import requests
 import json
@@ -20,7 +21,7 @@ def index():
 def results():
     query = request.form['query']
     #print(query.replace(" ", "+"))
-    payload = {'api_key' : '013394cc2a0b549c132a73bfc223372e', 'query' : query}
+    payload = {'api_key' : config.api_key, 'query' : query}
     # the request only returns the first page of results... need to figure out a way to get the next pages
     r = requests.get('https://api.themoviedb.org/3/search/multi', params=payload)
     #print(r.json())
@@ -51,7 +52,7 @@ def results():
     
 @app.route('/movie/<int:id>')
 def movie(id):
-    payload = {'api_key' : '013394cc2a0b549c132a73bfc223372e'}
+    payload = {'api_key' : config.api_key}
     r = requests.get('https://api.themoviedb.org/3/movie/' + str(id) , params=payload)
     movie_details = r.json()
     try:
@@ -76,7 +77,7 @@ def movie(id):
 
 @app.route('/tv/<int:id>')
 def tv(id):
-    payload = {'api_key' : '013394cc2a0b549c132a73bfc223372e'}
+    payload = {'api_key' : config.api_key}
     r = requests.get('https://api.themoviedb.org/3/tv/' + str(id) , params=payload)
     tv_details = r.json()
     try:
