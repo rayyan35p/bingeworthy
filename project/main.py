@@ -1,9 +1,10 @@
-import config
-from flask import Flask, redirect, render_template, url_for, request
+import project.config as config
+from flask import Blueprint, Flask, redirect, render_template, url_for, request
 import requests
 import json
+from . import db
 
-app = Flask(__name__)
+main = Blueprint('main', __name__)
 
 class query_results:
     
@@ -13,11 +14,11 @@ class query_results:
         self.poster_url = poster_url
     
 
-@app.route('/')
+@main.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/results', methods=['POST'])
+@main.route('/results', methods=['POST'])
 def results():
     query = request.form['query']
     #print(query.replace(" ", "+"))
@@ -50,7 +51,7 @@ def results():
         
     return render_template('results.html', results=query_result_list)
     
-@app.route('/movie/<int:id>')
+@main.route('/movie/<int:id>')
 def movie(id):
     payload = {'api_key' : config.api_key}
     r = requests.get('https://api.themoviedb.org/3/movie/' + str(id) , params=payload)
@@ -75,7 +76,7 @@ def movie(id):
     return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,
                            sypnosis = sypnosis, rating = rating, genres = genres)
 
-@app.route('/tv/<int:id>')
+@main.route('/tv/<int:id>')
 def tv(id):
     payload = {'api_key' : config.api_key}
     r = requests.get('https://api.themoviedb.org/3/tv/' + str(id) , params=payload)
@@ -102,4 +103,4 @@ def tv(id):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    main.run(debug=True)
