@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, request, url_for
+from flask import Blueprint, redirect, render_template, request, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
 from . import db
@@ -21,6 +21,7 @@ def signup_post():
     user = User.query.filter_by(email=email).first()
 
     if user:
+        flash('Email address already exists')
         return redirect('/signup')
     
     new_user = User(email=email, password=generate_password_hash(password, method='sha256'))

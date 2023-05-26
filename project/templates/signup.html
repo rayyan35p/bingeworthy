@@ -6,6 +6,13 @@
 
 {% block body %}
 <div class="container mt-5">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="text-danger">
+            {{ messages[0] }}. Go to <a href="/login">login page</a>.
+        </div>
+    {% endif %}
+    {% endwith %}
     <form method="POST" action="/signup">
         <div class="mb-3">
             <label for="inputEmail" class="form-label text-white">Email Address</label>
