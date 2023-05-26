@@ -2,9 +2,9 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
+app = Flask(__name__)
 
 def create_app():
-    app = Flask(__name__)
 
     app.config['SECRET_KEY'] = 'secret-key-goes-here'
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -20,3 +20,7 @@ def create_app():
     app.register_blueprint(main_blueprint)
 
     return app
+
+app = create_app()
+with app.app_context():
+    db.create_all()
