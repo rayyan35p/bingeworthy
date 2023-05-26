@@ -11,9 +11,6 @@ def create_app():
 
     db.init_app(app)
 
-    with app.app_context():
-        db.create_all()
-
     # blueprint for auth routes in the app
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
