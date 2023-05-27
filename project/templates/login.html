@@ -5,6 +5,32 @@
 {% endblock %}
 
 {% block body %}
-
+<!--Login Details-->
+<div class="container-fluid">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="text-danger">
+            {{ messages[0] }}.
+        </div>
+    {% endif %}
+    {% endwith %}
+    <form method="POST" action="/login">
+        <div class="mb-3">
+            <label for="inputEmail" class="form-label text-white">Email Address</label>
+            <input type="email" name="email" class="form-control" id="inputEmail">
+        </div>
+        <div class="mb-3">
+            <label for="inputPassword" class="form-label text-white">Password</label>
+            <input type="password" name="password" class="form-control" id="inputPassword">
+        </div>
+        <div class="field">
+            <label class="checkbox">
+                <input type="checkbox" name = "remember">
+                Remember me
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+</div>
 
 {% endblock %}

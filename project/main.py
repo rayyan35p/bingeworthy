@@ -18,6 +18,10 @@ class query_results:
 def index():
     return render_template('index.html')
 
+@main.route('/profile')
+def profile():
+    return render_template('profile.html')
+
 @main.route('/results', methods=['POST'])
 def results():
     query = request.form['query']
@@ -101,6 +105,6 @@ def tv(id):
     return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,
                            sypnosis = sypnosis, rating = rating, genres = genres)
 
-
-if __name__ == "__main__":
-    main.run(debug=True)
+# needed?
+# if __name__ == "__main__": 
+#     main.run(debug=True)
