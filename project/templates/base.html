@@ -21,11 +21,20 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ms-auto">
+                        {% if not current_user.is_authenticated %}
+                        <li class="nav-item">    
                             <a class="nav-link" href="/signup">Sign up</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/login">Log in</a>
                         </li>
+                        {% endif %}
+                        {% if current_user.is_authenticated %}
+                        <div class="navbar-text">Welcome, {{name}}!</div>
+                        <li class="nav-item">    
+                            <a class="nav-link" href="/logout">Logout</a>
+                        </li>
+                        {% endif %}
                     </ul>
                     <form class="d-flex" action="/results" method="POST" role="search">
                         <input class="form-control me-2" name="query" type="search" placeholder="Search" aria-label="Search">
@@ -33,7 +42,7 @@
                             <i class="bi bi-search"></i>
                         </button>
                     </form>
-                  </div>
+                </div>
             </div>
         </nav>
         {%block body %}{% endblock %}

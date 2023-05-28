@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, render_template, request, url_for, flash
-from flask_login import login_user
+from flask_login import login_user, current_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User
 from . import db
@@ -23,7 +23,8 @@ def login_post():
         return redirect(url_for('auth.login'))
     
     login_user(user, remember=remember)
-    return redirect(url_for('main.profile'))
+    # name is not passed into template if user is logged in automatically
+    return render_template('index.html', name=current_user.name)
 
 @auth.route('/signup')
 def signup():
@@ -32,6 +33,7 @@ def signup():
 @auth.route('/signup', methods=['POST'])
 def signup_post():
     email = request.form.get('email')
+    name = request.form.get('name')
     password = request.form.get('password')
 
     user = User.query.filter_by(email=email).first()
@@ -40,7 +42,7 @@ def signup_post():
         flash('Email address already exists')
         return redirect('/signup')
     
-    new_user = User(email=email, password=generate_password_hash(password, method='sha256'))
+    new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
 
     db.session.add(new_user)
     db.session.commit()
@@ -48,5 +50,7 @@ def signup_post():
     return redirect('/login')
 
 @auth.route('/logout')
+@login_required
 def logout():
-    return 'Logout'
+    logout_user()
+    return redirect('/')
