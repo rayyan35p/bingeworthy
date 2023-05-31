@@ -26,6 +26,20 @@
                 </div>
               </div>
         </div>
+        <!--User Controls-->
+        <div class="col-3">
+            {% if current_user.is_authenticated %}
+            <form class="form-white form-outline mb-4" method="POST" action="/add_movie">
+                <div class="mb-3">
+                    <input type="hidden" name="id" value = "{{id}}">
+                    <input type="hidden" name="name" value = "{{title}}">
+                    <input type="hidden" name="img" value = "{{poster}}">
+                    <input type="hidden" name="link" value = "{{link}}">
+                </div>
+                <button type="submit" class="btn btn-outline-light btn-lg px-5">Add to Completed Shows</button>
+            </form>
+            {% endif %}
+        </div>
     </div>
 </div>
 <!-- Sypnosis-->
