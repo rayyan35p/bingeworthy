@@ -24,7 +24,7 @@ def login_post():
     
     login_user(user, remember=remember)
     # name is not passed into template if user is logged in automatically
-    return render_template('index.html', name=current_user.name)
+    return render_template('index.html')
 
 @auth.route('/signup')
 def signup():
