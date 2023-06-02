@@ -34,18 +34,23 @@
             <div class="col-9">
                 <div class="card bg-dark text-white" style="border-radius: 1rem;">
                     <div class="card-body p-5">
+                        <div class="row">
+                            <h2>Completed Shows</h2>
+                        </div>
                         <div class="mb-md-5 mt-md-4 pb-5">
-                            <div class="row">Completed Shows</div>
-                            {% for movie in movies %}
                             <div class="row">
-                                <div class="col">
-                                    <img src={{movie.imgURL}} alt="poster" class="">
+                                {% for movie in movies %}
+                            
+                                <div class="col-6 col-md-4 col-lg-2">
+                                    <img src={{movie.imgURL}} alt="poster" class="img-fluid">
+                                    <a href={{movie.info_link}}>
+                                        <button class="btn btn-outline-light btn-block">
+                                            {{movie.name}}
+                                        </button></a>
                                 </div>
-                                <div class="col">
-                                    <a href={{movie.info_link}}>{{movie.name}}</a>
-                                </div>
+                                {% endfor %}  
                             </div>
-                            {% endfor %}  
+                            
                         </div>
                     </div>           
                 </div>                 
