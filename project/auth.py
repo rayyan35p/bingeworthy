@@ -21,7 +21,7 @@ def login_post():
     if not user or not check_password_hash(user.password, password):
         flash('Please check your login details and try again')
         return redirect(url_for('auth.login'))
-    ## get user info
+    ## get current user info
     session['user'] = user.id
     
 
@@ -46,7 +46,7 @@ def signup_post():
         return redirect('/signup')
     
     new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
-    user_list = completed_show_list(user_id = new_user.id)
+    user_list = completed_show_list(user = new_user)
 
     db.session.add(new_user)
     db.session.add(user_list)
@@ -64,24 +64,37 @@ def logout():
 @auth.route('/profile')
 @login_required
 def profile():
+    #get User object to reference fields
+    currentUser = User.query.filter_by(id = session['user']).first()
+
+    #if user is logged in, return profile page with movies being an array of Movie objects
     if session['user']:
-         movies = Movie.query.filter_by(list_id = session['user'])
+         movies = currentUser.completed_shows.shows
          print(movies)
-         print('test2')
          return render_template('profile.html', movies = movies)
+    
     return render_template('profile.html')
     
 @auth.route('/add_movie', methods=['POST'])
 def add_movie():
+    #get User object to reference fields
+    currentUser = User.query.filter_by(id = session['user']).first()
+
+    # movie information
     id = request.form.get('id')
     imgURL = request.form.get('img')
     name = request.form.get('name')
     link = request.form.get('link')
     print(id)
+
+    #check if movie exists in db, then add movie to the list
     movie = Movie.query.filter_by(movie_id = id).first()
     if not movie:
-        movie = Movie(imgURL = imgURL, name = name, movie_id = id, list_id = session['user'], info_link = link)
+        movie = Movie(imgURL = imgURL, name = name, movie_id = id,
+                       info_link = link)
         db.session.add(movie)
-        db.session.commit()
-        print('test1')
+        
+    currentUser.completed_shows.shows.append(movie)
+    db.session.commit()
+
     return redirect('/profile')
