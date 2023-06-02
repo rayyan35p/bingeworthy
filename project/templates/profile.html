@@ -18,27 +18,37 @@
             <strong>
                 Test
             </strong> <br>
+            <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <div class="card-body p-5">
+                    <div class="mb-md-5 mt-md-4 pb-5">
+                        <h2 class="fw-bold mb-2">
+                            {{current_user.name}}
+                        </h2>
+                    </div>      
+                </div>
+            </div>
         </div>
 
         <div class="row mt-5">
             <!--Featured Shows-->
             <div class="col-9">
-                <div class="container-fluid">
-                    <div class="row">Completed Shows</div>
-                        {% for movie in movies %}
-                        <div class="row">
-                            <div class="col">
-                                <img src={{movie.imgURL}} alt="poster" class="">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-body p-5">
+                        <div class="mb-md-5 mt-md-4 pb-5">
+                            <div class="row">Completed Shows</div>
+                            {% for movie in movies %}
+                            <div class="row">
+                                <div class="col">
+                                    <img src={{movie.imgURL}} alt="poster" class="">
+                                </div>
+                                <div class="col">
+                                    <a href={{movie.info_link}}>{{movie.name}}</a>
+                                </div>
                             </div>
-                            <div class="col">
-                                <a href={{movie.info_link}}>{{movie.name}}</a>
-                            </div>
+                            {% endfor %}  
                         </div>
-                
-                    {% endfor %}
-                </div>
-                
-                
+                    </div>           
+                </div>                 
             </div>
             <!--Friend List-->
             <div class="col-3">
