@@ -47,7 +47,6 @@ def signup_post():
     
     new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
     user_list = completed_show_list(user = new_user)
-
     db.session.add(new_user)
     db.session.add(user_list)
     db.session.commit()
@@ -69,7 +68,7 @@ def profile():
 
     #if user is logged in, return profile page with movies being an array of Movie objects
     if session['user']:
-         movies = currentUser.completed_shows.shows
+         movies = currentUser.completed_shows.shows # return an array of movie object
          print(movies)
          return render_template('profile.html', movies = movies)
     

@@ -108,7 +108,3 @@ def tv(id):
         genres = genres + items.get('name') + " "
     return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,
                            sypnosis = sypnosis, rating = rating, genres = genres, id = id, link = link)
-
-# needed?
-# if __name__ == "__main__": 
-#     main.run(debug=True)
