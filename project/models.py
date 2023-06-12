@@ -1,7 +1,7 @@
 from flask_login import UserMixin
 from . import db
 import project.config as config
-from flask import Blueprint, Flask, redirect, render_template, url_for, request
+from flask import Blueprint, Flask, redirect, render_template, url_for, request, session
 import requests
 
 
@@ -24,6 +24,14 @@ class completed_show_list(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     shows = db.relationship('Show', secondary = show_list, backref = 'completed_show_list')
+
+    #Checks if a show is already in the list, takes in an Object of type Show
+    #Returns true/false
+    def checkShow(self, show):
+        if isinstance(show, Show):
+            return show in self.shows
+        return False
+        
 
 # One to One relationship between user and movie_list
 class User(UserMixin, db.Model):
