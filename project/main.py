@@ -80,7 +80,7 @@ def movie(id):
     for items in genre_list:
         genres = genres + items.get('name') + " "
     return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,
-                           sypnosis = sypnosis, rating = rating, genres = genres, id = id, link = link)
+                           sypnosis = sypnosis, rating = rating, genres = genres, id = id, link = link, show_type = 0)
 
 @main.route('/tv/<int:id>')
 def tv(id):
@@ -107,4 +107,4 @@ def tv(id):
     for items in genre_list:
         genres = genres + items.get('name') + " "
     return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,
-                           sypnosis = sypnosis, rating = rating, genres = genres, id = id, link = link)
+                           sypnosis = sypnosis, rating = rating, genres = genres, id = id, link = link, show_type = 1)

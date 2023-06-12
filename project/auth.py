@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, render_template, request, url_for, flash, session
 from flask_login import login_user, current_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from .models import User, Movie , completed_show_list
+from .models import User, Show , completed_show_list
 from . import db
 
 auth = Blueprint('auth', __name__)
@@ -74,26 +74,35 @@ def profile():
     
     return render_template('profile.html')
     
-@auth.route('/add_movie', methods=['POST'])
-def add_movie():
+@auth.route('/add_show', methods=['POST'])
+def add_show():
     #get User object to reference fields
     currentUser = User.query.filter_by(id = session['user']).first()
 
-    # movie information
+    # show information
+    show_type = request.form.get('show_type')
     id = request.form.get('id')
     imgURL = request.form.get('img')
     name = request.form.get('name')
     link = request.form.get('link')
     print(id)
 
-    #check if movie exists in db, then add movie to the list
-    movie = Movie.query.filter_by(movie_id = id).first()
-    if not movie:
-        movie = Movie(imgURL = imgURL, name = name, movie_id = id,
-                       info_link = link)
-        db.session.add(movie)
+    #check if show exists in db, then add show to the list
+    show = Show.query.filter_by(show_id = id).first()
+    if not show:
+        show = Show(imgURL = imgURL, name = name, show_id = id,
+                       info_link = link, show_type = show_type)
+        db.session.add(show)
         
-    currentUser.completed_shows.shows.append(movie)
+    currentUser.completed_shows.shows.append(show)
     db.session.commit()
 
     return redirect('/profile')
+
+@auth.route('/delete_show', methods=['POST'])
+def remove_show():
+    #get User object to reference fields
+    currentUser = User.query.filter_by(id = session['user']).first()
+
+    completed_show = completed_show_list.query.filter_by()
+

@@ -29,9 +29,10 @@
         <!--User Controls-->
         <div class="col-sm-12 col-lg-3 text-center">
                 {% if current_user.is_authenticated %}
-                <form class="form-white form-outline mb-4" method="POST" action="/add_movie">
+                <form class="form-white form-outline mb-4" method="POST" action="/add_show">
                     <button type="submit" class="btn btn-outline-light btn-lg px-5 mt-2">Add to Completed Shows</button>
                     <div class="mb-3">
+                        <input type="hidden" name="show_type" value="{{show_type}}">
                         <input type="hidden" name="id" value = "{{id}}">
                         <input type="hidden" name="name" value = "{{title}}">
                         <input type="hidden" name="img" value = "{{poster}}">
