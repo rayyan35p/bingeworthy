@@ -85,7 +85,6 @@ def add_show():
     imgURL = request.form.get('img')
     name = request.form.get('name')
     link = request.form.get('link')
-    print(id)
 
     #check if show exists in db, then add show to the list
     show = Show.query.filter_by(show_id = id).first()
@@ -93,7 +92,7 @@ def add_show():
         show = Show(imgURL = imgURL, name = name, show_id = id,
                        info_link = link, show_type = show_type)
         db.session.add(show)
-        
+    
     currentUser.completed_shows.shows.append(show)
     db.session.commit()
 
