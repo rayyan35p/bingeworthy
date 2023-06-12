@@ -74,11 +74,13 @@ def movie(id):
     rating = movie_details.get('vote_average')
     # movie_details.get('genres') returns a list of dictionaries : [ {genre1: action}, {genre2:drama}]
     genre_list = movie_details.get('genres')
+    id = movie_details.get('id')
+    link = "/movie/" + str(id)
     genres = ""
     for items in genre_list:
         genres = genres + items.get('name') + " "
     return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,
-                           sypnosis = sypnosis, rating = rating, genres = genres)
+                           sypnosis = sypnosis, rating = rating, genres = genres, id = id, link = link)
 
 @main.route('/tv/<int:id>')
 def tv(id):
@@ -99,12 +101,10 @@ def tv(id):
     rating = tv_details.get('vote_average')
     # tv_details.get('genres') returns a list of dictionaries : [ {genre1: action}, {genre2:drama}]
     genre_list = tv_details.get('genres')
+    id = tv_details.get('id')
+    link = "/tv/" + str(id)
     genres = ""
     for items in genre_list:
         genres = genres + items.get('name') + " "
     return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,
-                           sypnosis = sypnosis, rating = rating, genres = genres)
-
-# needed?
-# if __name__ == "__main__": 
-#     main.run(debug=True)
+                           sypnosis = sypnosis, rating = rating, genres = genres, id = id, link = link)

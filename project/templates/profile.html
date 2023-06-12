@@ -5,5 +5,61 @@
 {% endblock %}
 
 {% block body %}
-<display-1>welcome</display-1>
+<div class="container-fluid justify-content-center text-white">
+    <div class="container-lg">
+        <!--User Information-->
+        <div class="row justify-content-start mt-3">
+            <strong>
+                {{current_user.name}}
+            </strong> <br>
+            <strong>
+                {{current_user.email}}
+            </strong> <br>
+            <strong>
+                Test
+            </strong> <br>
+            <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <div class="card-body p-5">
+                    <div class="mb-md-5 mt-md-4 pb-5">
+                        <h2 class="fw-bold mb-2">
+                            {{current_user.name}}
+                        </h2>
+                    </div>      
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <!--Featured Shows-->
+            <div class="col-9">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-body p-5">
+                        <div class="row">
+                            <h2>Completed Shows</h2>
+                        </div>
+                        <div class="mb-md-5 mt-md-4 pb-5">
+                            <div class="row">
+                                {% for movie in movies %}
+                            
+                                <div class="col-6 col-md-4 col-lg-2">
+                                    <img src={{movie.imgURL}} alt="poster" class="img-fluid">
+                                    <a href={{movie.info_link}}>
+                                        <button class="btn btn-outline-light btn-block">
+                                            {{movie.name}}
+                                        </button></a>
+                                </div>
+                                {% endfor %}  
+                            </div>
+                            
+                        </div>
+                    </div>           
+                </div>                 
+            </div>
+            <!--Friend List-->
+            <div class="col-3">
+                Friends:
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
