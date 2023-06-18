@@ -12,12 +12,25 @@ show_list = db.Table('show_list',
 
 class Show(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    #list_id = db.Column(db.Integer, db.ForeignKey('completed_show_list.id'))    
     imgURL = db.Column(db.String(100))
     name = db.Column(db.String(100))
     show_type = db.Column(db.Integer)
     show_id = db.Column(db.String(100))
     info_link = db.Column(db.String(100))
+    ratings_reviews = db.relationship('Rating_Review', backref = 'show')
+
+    # Returns an array of reviews
+    def getRating_Reviews(self):
+        return self.ratings_reviews
+    
+    # Returns the average rating
+    def getAverageRating(self):
+        total = 0
+        count = 0
+        for reviews in self.getRating_Reviews():
+            total += reviews.rating
+            count += 1
+        return total/count
 
 
 class completed_show_list(db.Model):
@@ -31,6 +44,19 @@ class completed_show_list(db.Model):
         if isinstance(show, Show):
             return show in self.shows
         return False
+ 
+class Rating_Review(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    rating = db.Column(db.Integer)
+    review = db.Column(db.String(300))
+    show_id = db.Column(db.Integer, db.ForeignKey('show.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    date_time = db.Column(db.String(300))
+
+    def getInfo(self):
+        return [self.rating, self.review, self.user.name, self.date_time]
+
+
         
 
 # One to One relationship between user and movie_list
@@ -39,5 +65,6 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(100), unique=True)
     name = db.Column(db.String(100))
     password = db.Column(db.String(100))
+    ratings_reviews = db.relationship('Rating_Review', backref = 'user')
     completed_shows = db.relationship('completed_show_list', backref= 'user', lazy = True, uselist=False)
 

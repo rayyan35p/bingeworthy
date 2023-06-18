@@ -3,6 +3,7 @@ from flask import Blueprint, Flask, redirect, render_template, url_for, request
 import requests
 import json
 from . import db
+from .models import User, Show , completed_show_list, Rating_Review
 
 main = Blueprint('main', __name__)
 
@@ -79,8 +80,12 @@ def movie(id):
     genres = ""
     for items in genre_list:
         genres = genres + items.get('name') + " "
+
+    # Check for Ratings and Reviews by bingeworthy Users
+    show = Show.query.filter_by(show_id = id).first()
     return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,
-                           sypnosis = sypnosis, rating = rating, genres = genres, id = id, link = link, show_type = 0)
+                           sypnosis = sypnosis, rating = rating, genres = genres, id = id, link = link, show_type = 0,
+                           show = show)
 
 @main.route('/tv/<int:id>')
 def tv(id):

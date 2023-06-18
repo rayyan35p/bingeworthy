@@ -23,12 +23,40 @@
                   <h6 class="card-subtitle mb-2 pt-5">Year Released: {{released_date}}</h6>
                   <h6 class="card-subtitle mb-2 pt-2">Genre: {{genres}}</h6>
                   <h6 class="card-subtitle mb-2 pt-2">Rating: {{rating}}/10</h6>
+                  {% if show %}
+                  <h6 class="card-subtitle mb-2 pt-2">bingeworthy Rating: {{show.getAverageRating()}}/10</h6>
+                  {% endif %}
                 </div>
               </div>
         </div>
         <!--User Controls-->
         <div class="col-sm-12 col-lg-3 text-center">
                 {% if current_user.is_authenticated %}
+                <!-- To Leave Rating and Reviews-->
+                <form class="form-white form-outline mb-4" method="POST" action="/rate_review">
+                    
+                    <div class="mb-3">
+                        <input type="hidden" name="show_type" value="{{show_type}}">
+                        <input type="hidden" name="id" value = "{{id}}">
+                        <input type="hidden" name="name" value = "{{title}}">
+                        <input type="hidden" name="img" value = "{{poster}}">
+                        <input type="hidden" name="link" value = "{{link}}">
+                    </div>
+
+                    <div class="input-group mb-3 w-25 mx-auto">
+                        <input type="text" name="rating" class="form-control" placeholder="Rating" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                        <div class="input-group-append">
+                          <span class="input-group-text" id="basic-addon2">/10</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3 text-white">
+                        <label for="comment">Review:</label>
+                        <textarea class="form-control" rows="5" name="review" id="review"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-outline-light btn-lg px-5 mt-2">Submit</button>
+                </form>
+                <!-- To Add to Completed Shows-->
                 <form class="form-white form-outline mb-4" method="POST" action="/add_show">
                     <button type="submit" class="btn btn-outline-light btn-lg px-5 mt-2">Add to Completed Shows</button>
                     <div class="mb-3">

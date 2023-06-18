@@ -1,8 +1,9 @@
 from flask import Blueprint, redirect, render_template, request, url_for, flash, session
 from flask_login import login_user, current_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from .models import User, Show , completed_show_list
+from .models import User, Show , completed_show_list, Rating_Review
 from . import db
+from datetime import date
 
 auth = Blueprint('auth', __name__)
 
@@ -95,7 +96,7 @@ def add_show():
     
     currentUser.completed_shows.shows.append(show)
     db.session.commit()
-
+    
     return redirect('/profile')
 
 @auth.route('/delete_show', methods=['POST'])
@@ -103,5 +104,46 @@ def remove_show():
     #get User object to reference fields
     currentUser = User.query.filter_by(id = session['user']).first()
 
-    completed_show = completed_show_list.query.filter_by()
+    #get show object
+    id = request.form.get('id')
+    show = Show.query.filter_by(show_id = id).first()
+    
+    if currentUser.completed_shows.checkShow(show):
+        currentUser.completed_shows.shows.remove(show)
+        db.session.commit()
+
+
+@auth.route('/rate_review', methods= ['POST'])
+def rate_review():
+    #get User object to reference fields
+    currentUser = User.query.filter_by(id = session['user']).first()
+
+    # show information
+    show_type = request.form.get('show_type')
+    id = request.form.get('id')
+    imgURL = request.form.get('img')
+    name = request.form.get('name')
+    link = request.form.get('link')
+
+    #check if show exists in db, then add show to the list
+    show = Show.query.filter_by(show_id = id).first()
+    if not show:
+        show = Show(imgURL = imgURL, name = name, show_id = id,
+                       info_link = link, show_type = show_type)
+        db.session.add(show)
+
+    # rating_review information
+    rating = request.form.get('rating')
+    review = request.form.get('review')
+    date_time = date.today().strftime("%B %d, %Y")
+
+    # create new review
+    userReview = Rating_Review(rating = rating, review = review, user = currentUser, show = show, date_time = date_time)
+    db.session.add(userReview)
+    db.session.commit()
+    print(userReview.user.name)
+    print(userReview.show.name)
+
+    return redirect('/profile')
+    
 
