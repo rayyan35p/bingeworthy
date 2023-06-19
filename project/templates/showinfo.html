@@ -85,19 +85,24 @@
     </div>
 </div>
 <!--Reviews-->
-<div class="container-fluid" >
-    <div class="card ps-5 pe-5 pt-5" style="background-color:rgb(8,8,8);">
+<div class="container-fluid ps-5 pe-5 pt-5 text-white" >
+    <div class="card" style="background-color:rgb(8,8,8);">
         <h1 class="text-white">
             Reviews
         </h1>
     </div>
-    <div class="card ps-5 pe-5" style="background-color:rgb(8,8,8);">
-        <p class="text-white">
-            How to do a Prologue 101
-
-            I have been reading the manga since it's release and I was instantly hooked, thus becoming a huge fan of the series. So I am happy to say that the people at Doga Kobo have perfectly captured all the feelings I had while reading the prologue and somehow more. There is truly very few ways I can describe these emotions I have. The best way to understand these feelings though is by watching this 82 minute masterpiece of a prologue! I don't just recommend watching this episode, I demand it. So what are you doing already? Go watch the first episode Oshi no Ko and experience what me and many others felt for the first time.
-        </p>
+    <!-- Check for bingeworthy users reviews-->
+    {% if show %}
+    {% for reviews in show.getRating_Reviews()[-10:] %}
+    {% if reviews.review %}
+    <div class="card-body mb-4 mt-4">
+        <h5 class="card-title">User: {{reviews.getInfo()[2]}}</h5>
+        <p class="card-text">Rating : {{reviews.getInfo()[0]}}/10</p>
+        <p class="card-text">Review : {{reviews.getInfo()[1]}}</p>
     </div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
 </div>
 <!--Recommendations-->
 <div class="container-fluid" >
