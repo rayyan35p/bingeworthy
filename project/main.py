@@ -111,5 +111,10 @@ def tv(id):
     genres = ""
     for items in genre_list:
         genres = genres + items.get('name') + " "
+
+    # Check for Ratings and Reviews by bingeworthy Users
+    show = Show.query.filter_by(show_id = id).first()
+
     return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,
-                           sypnosis = sypnosis, rating = rating, genres = genres, id = id, link = link, show_type = 1)
+                           sypnosis = sypnosis, rating = rating, genres = genres, id = id, link = link, show_type = 1,
+                           show = show)
