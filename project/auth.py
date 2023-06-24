@@ -71,9 +71,9 @@ def profile():
     if session['user']:
          shows = currentUser.completed_shows.shows # return an array of movie object
          print(shows)
-         return render_template('profile.html', shows = shows)
+         return render_template('profile.html', shows = shows, currentUser = currentUser)
     
-    return render_template('profile.html')
+    return render_template('profile.html', currentUser = currentUser)
     
 @auth.route('/add_show', methods=['POST'])
 def add_show():

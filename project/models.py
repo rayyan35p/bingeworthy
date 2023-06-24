@@ -19,7 +19,7 @@ class Show(db.Model):
     info_link = db.Column(db.String(100))
     ratings_reviews = db.relationship('Rating_Review', backref = 'show')
 
-    # Returns an array of reviews
+    # Returns an array of reviews object [review1, review2,...]
     def getRating_Reviews(self):
         return self.ratings_reviews
     
@@ -55,6 +55,7 @@ class Rating_Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     rating = db.Column(db.Integer)
     review = db.Column(db.String(300))
+    # One to many relationships
     show_id = db.Column(db.Integer, db.ForeignKey('show.id'))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     date_time = db.Column(db.String(300))
@@ -73,4 +74,8 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100))
     ratings_reviews = db.relationship('Rating_Review', backref = 'user')
     completed_shows = db.relationship('completed_show_list', backref= 'user', lazy = True, uselist=False)
+
+    # Returns an array of reviews object [review1, review2,...]
+    def getRating_Reviews(self):
+        return self.ratings_reviews
 

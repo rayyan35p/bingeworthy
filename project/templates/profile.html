@@ -9,20 +9,15 @@
     <div class="container-lg">
         <!--User Information-->
         <div class="row justify-content-start mt-3">
-            <strong>
-                {{current_user.name}}
-            </strong> <br>
-            <strong>
-                {{current_user.email}}
-            </strong> <br>
-            <strong>
-                Test
-            </strong> <br>
+            
             <div class="card bg-dark text-white" style="border-radius: 1rem;">
                 <div class="card-body p-5">
                     <div class="mb-md-5 mt-md-4 pb-5">
                         <h2 class="fw-bold mb-2">
                             {{current_user.name}}
+                        </h2>
+                        <h2 class="fw-bold mb-2">
+                            {{current_user.email}}
                         </h2>
                     </div>      
                 </div>
@@ -61,7 +56,33 @@
             </div>
             <!--Friend List-->
             <div class="col-3">
-                Friends:
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="row">
+                        <h2 class = "p-5">Friends</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <h2 class="p-5">Your Latest Reviews</h2>
+                <div class="card-body p-5">
+                        <div class="row">
+                            {% for review in currentUser.getRating_Reviews()[-10:] %}
+                            <div class="row mb-5">
+                                <img src={{review.show.imgURL}} alt="poster" class="img" style="width: 10%">
+                                
+                                <a href={{review.show.info_link}}>
+                                    <button class="btn btn-outline-light btn-block mt-2">
+                                        {{review.show.name}}
+                                    </button>
+                                </a>
+                                <p class="card-text mt-4">Rating : {{review.getInfo()[0]}}/10</p>
+                                <p class="card-text">Review : {{review.getInfo()[1]}}</p>
+                            </div>
+                            {% endfor %}  
+                        </div>
+                </div>           
             </div>
         </div>
     </div>
