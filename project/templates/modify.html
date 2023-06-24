@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div class="card bg-dark text-white" style="border-radius: 1rem;"></div>
+    <div class="card-body p-5">
+        <div class="row">
+            <h2 class="text-white">Completed Shows</h2>
+        </div>
+        <div class="mb-md-5 mt-md-4 pb-5">
+            <div class="row">
+                {% for show in shows %}
+                <div class="col-6 col-md-4 col-lg-2">
+                    <img src={{show.imgURL}} alt="poster" class="img-fluid">
+                    <form class="form-white form-outline mb-4" method="POST" action="/delete_show">
+                        <button type="submit" class="btn btn-outline-light btn-lg px-5 mt-2">Remove</button>
+                        <div class="mb-3">
+                            <input type="hidden" name="id" value = "{{show.show_id}}">
+                        </div>
+                    </form>
+                </div>
+                {% endfor %}  
+            </div>
+            
+        </div>
+    </div>     
+</div>      
+
+{% endblock %}
