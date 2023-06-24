@@ -23,7 +23,7 @@
                   <h6 class="card-subtitle mb-2 pt-5">Year Released: {{released_date}}</h6>
                   <h6 class="card-subtitle mb-2 pt-2">Genre: {{genres}}</h6>
                   <h6 class="card-subtitle mb-2 pt-2">Rating: {{rating}}/10</h6>
-                  {% if show %}
+                  {% if show and show.hasRating() %}
                   <h6 class="card-subtitle mb-2 pt-2">bingeworthy Rating: {{show.getAverageRating()}}/10</h6>
                   {% endif %}
                 </div>
