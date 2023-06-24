@@ -69,9 +69,9 @@ def profile():
 
     #if user is logged in, return profile page with movies being an array of Movie objects
     if session['user']:
-         movies = currentUser.completed_shows.shows # return an array of movie object
-         print(movies)
-         return render_template('profile.html', movies = movies)
+         shows = currentUser.completed_shows.shows # return an array of movie object
+         print(shows)
+         return render_template('profile.html', shows = shows)
     
     return render_template('profile.html')
     
@@ -99,6 +99,20 @@ def add_show():
     
     return redirect('/profile')
 
+@auth.route('/modify_list')
+@login_required
+def modify_list():
+    #get User object to reference fields
+    currentUser = User.query.filter_by(id = session['user']).first()
+
+    #if user is logged in, return profile page with movies being an array of Movie objects
+    if session['user']:
+         shows = currentUser.completed_shows.shows # return an array of movie object
+         print(shows)
+         return render_template('modify.html', shows = shows)
+    
+    return render_template('modify.html')
+
 @auth.route('/delete_show', methods=['POST'])
 def remove_show():
     #get User object to reference fields
@@ -111,6 +125,8 @@ def remove_show():
     if currentUser.completed_shows.checkShow(show):
         currentUser.completed_shows.shows.remove(show)
         db.session.commit()
+
+    return redirect(request.referrer)
 
 
 @auth.route('/rate_review', methods= ['POST'])
@@ -144,6 +160,6 @@ def rate_review():
     print(userReview.user.name)
     print(userReview.show.name)
 
-    return redirect('/profile')
+    return redirect(request.referrer)
     
 

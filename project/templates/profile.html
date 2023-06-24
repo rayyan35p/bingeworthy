@@ -36,16 +36,20 @@
                     <div class="card-body p-5">
                         <div class="row">
                             <h2>Completed Shows</h2>
+                            <a href='/modify_list'>
+                                <button class="btn btn-outline-light btn-block">
+                                    Modify List
+                                </button></a>
                         </div>
                         <div class="mb-md-5 mt-md-4 pb-5">
                             <div class="row">
-                                {% for movie in movies %}
+                                {% for show in shows %}
                             
                                 <div class="col-6 col-md-4 col-lg-2">
-                                    <img src={{movie.imgURL}} alt="poster" class="img-fluid">
-                                    <a href={{movie.info_link}}>
+                                    <img src={{show.imgURL}} alt="poster" class="img-fluid">
+                                    <a href={{show.info_link}}>
                                         <button class="btn btn-outline-light btn-block">
-                                            {{movie.name}}
+                                            {{show.name}}
                                         </button></a>
                                 </div>
                                 {% endfor %}  
