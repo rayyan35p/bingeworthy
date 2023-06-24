@@ -31,6 +31,12 @@ class Show(db.Model):
             total += reviews.rating
             count += 1
         return total/count
+    
+    def hasRating(self):
+        count = 0
+        for reviews in self.getRating_Reviews():
+            count += 1
+        return count != 0
 
 
 class completed_show_list(db.Model):
