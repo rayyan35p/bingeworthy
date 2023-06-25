@@ -30,20 +30,21 @@
                 <div class="card bg-dark text-white" style="border-radius: 1rem;">
                     <div class="card-body p-5">
                         <div class="row">
-                            <h2>Completed Shows</h2>
+                            <h2>Recently Completed Shows</h2>
                             <a href='/modify_list'>
                                 <button class="btn btn-outline-light btn-block">
                                     Modify List
-                                </button></a>
+                                </button>
+                            </a>
                         </div>
                         <div class="mb-md-5 mt-md-4 pb-5">
                             <div class="row">
-                                {% for show in shows %}
+                                {% for show in shows[-10:] %}
                             
-                                <div class="col-6 col-md-4 col-lg-2">
+                                <div class="col-6 col-md-4 col-lg-2 text-center">
                                     <img src={{show.imgURL}} alt="poster" class="img-fluid">
                                     <a href={{show.info_link}}>
-                                        <button class="btn btn-outline-light btn-block">
+                                        <button class="btn btn-outline-light btn-block mt-1">
                                             {{show.name}}
                                         </button></a>
                                 </div>
@@ -69,16 +70,19 @@
                 <div class="card-body p-5">
                         <div class="row">
                             {% for review in currentUser.getRating_Reviews()[-10:] %}
-                            <div class="row mb-5">
-                                <img src={{review.show.imgURL}} alt="poster" class="img" style="width: 10%">
-                                
-                                <a href={{review.show.info_link}}>
-                                    <button class="btn btn-outline-light btn-block mt-2">
-                                        {{review.show.name}}
-                                    </button>
-                                </a>
-                                <p class="card-text mt-4">Rating : {{review.getInfo()[0]}}/10</p>
-                                <p class="card-text">Review : {{review.getInfo()[1]}}</p>
+                            <div class="card w-100 bg-dark p-5 text-white">
+                                <div class="row mb-5">
+                                    <img src={{review.show.imgURL}} alt="poster" class="img" style="width: 10%">
+                                    
+                                    <a href={{review.show.info_link}}>
+                                        <button class="btn btn-outline-light btn-block mt-2">
+                                            {{review.show.name}}
+                                        </button>
+                                    </a>
+                                    <p class="small mt-3">{{review.date_time}}</p>
+                                    <p class="card-text mt-4">Rating : {{review.getInfo()[0]}}/10</p>
+                                    <p class="card-text">Review : {{review.getInfo()[1]}}</p>
+                                </div>
                             </div>
                             {% endfor %}  
                         </div>
