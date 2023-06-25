@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, render_template, request, url_for, flash, session
 from flask_login import login_user, current_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from .models import User, Show , completed_show_list, Rating_Review
+from .models import User, Show , completed_show_list, Rating_Review, favourite_show_list
 from . import db
 from datetime import date
 
@@ -48,8 +48,10 @@ def signup_post():
     
     new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
     user_list = completed_show_list(user = new_user)
+    fav_list = favourite_show_list(user = new_user)
     db.session.add(new_user)
     db.session.add(user_list)
+    db.session.add(fav_list)
     db.session.commit()
 
     return redirect('/login')

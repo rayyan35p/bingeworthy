@@ -50,6 +50,23 @@ class completed_show_list(db.Model):
         if isinstance(show, Show):
             return show in self.shows
         return False
+    
+## Many to Many relationship between shows and lists
+favourite_list = db.Table('show_list',
+                      db.Column('fav_list_id', db.Integer, db.ForeignKey('favourite_show_list.id')),
+                      db.Column('show_id', db.Integer, db.ForeignKey('show.id')))
+
+class favourite_show_list(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    shows = db.relationship('Show', secondary = favourite_list, backref = 'favourite_show_list')
+
+    #Checks if a show is already in the list, takes in an Object of type Show
+    #Returns true/false
+    def checkShow(self, show):
+        if isinstance(show, Show):
+            return show in self.shows
+        return False
  
 class Rating_Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
