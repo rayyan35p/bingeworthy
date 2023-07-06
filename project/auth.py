@@ -47,8 +47,8 @@ def signup_post():
         return redirect('/signup')
     
     new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
-    user_list = show_list(user = new_user, type = "default", name = "completed")
-    fav_list = show_list(user = new_user, type = "default", name = "favourite")
+    user_list = show_list(user = new_user, type = "default", name = "Completed")
+    fav_list = show_list(user = new_user, type = "default", name = "Favourite")
     db.session.add(new_user)
     db.session.add(user_list)
     db.session.add(fav_list)
@@ -71,9 +71,11 @@ def profile():
 
     #if user is logged in, return profile page with movies being an array of Movie objects
     if session['user']:
-        print(currentUser.show_list)
+        # print(currentUser.show_list)
         shows = currentUser.getCompleted_List().shows # return an array of movie object
-        return render_template('profile.html', shows = shows, currentUser = currentUser)
+        shows2 = currentUser.getFavourite_List().shows # return an array of movie object
+        # print(currentUser.getCompleted_List())
+        return render_template('profile.html', shows = shows, shows2 = shows2, currentUser = currentUser)
     
     return render_template('profile.html', currentUser = currentUser)
     
@@ -96,13 +98,15 @@ def add_show():
                        info_link = link, show_type = show_type)
         db.session.add(show)
     
+    type = request.form.get('type')
+    list_name = request.form.get('list_name')
     print(currentUser.show_list)
-    currentUser.getCompleted_List().shows.append(show)
+    currentUser.getShowList(type, list_name).shows.append(show)
     db.session.commit()
     
     return redirect('/profile')
 
-@auth.route('/modify_list')
+@auth.route('/modify_list', methods=['POST'])
 @login_required
 def modify_list():
     #get User object to reference fields
@@ -110,10 +114,11 @@ def modify_list():
 
     #if user is logged in, return profile page with movies being an array of Movie objects
     if session['user']:
-         print(currentUser.show_list)
-         shows = currentUser.getCompleted_List().shows # return an array of movie object
-         print(shows)
-         return render_template('modify.html', shows = shows)
+        type = request.form.get('type')
+        list_name = request.form.get('list_name')
+        # print(type,list_name)
+        shows = currentUser.getShowList(type, list_name).shows # return an array of movie object
+        return render_template('modify.html', shows = shows, name = list_name, type = type)
     
     return render_template('modify.html')
 
@@ -125,12 +130,16 @@ def remove_show():
     #get show object
     id = request.form.get('id')
     show = Show.query.filter_by(show_id = id).first()
-    
-    if currentUser.getCompleted_List().checkShow(show):
-        currentUser.getCompleted_List().shows.remove(show)
+    type = request.form.get('type')
+    list_name = request.form.get('list_name')
+    if currentUser.getShowList(type, list_name).checkShow(show):
+        currentUser.getShowList(type, list_name).shows.remove(show)
         db.session.commit()
+    
+    # print(type,list_name)
+    shows = currentUser.getShowList(type, list_name).shows # return an array of movie object
+    return render_template('modify.html', shows = shows, name = list_name, type = type)
 
-    return redirect(request.referrer)
 
 
 @auth.route('/rate_review', methods= ['POST'])

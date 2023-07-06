@@ -31,15 +31,44 @@
                     <div class="card-body p-5">
                         <div class="row">
                             <h2>Recently Completed Shows</h2>
-                            <a href='/modify_list'>
+                            <form method="POST" action='/modify_list'>
+                                <input type="hidden" name="type" value = "default">
+                                <input type="hidden" name="list_name" value = "Completed">
+                                <button type= "submit" class="btn btn-outline-light btn-block">
+                                    Modify List
+                                </button>
+                            </form>
+                        </div>
+                        <!--Recently Completed Shows-->
+                        <div class="mb-md-5 mt-md-4 pb-5">
+                            <div class="row">
+                                {% for show in shows[-5:] %}
+                            
+                                <div class="col-6 col-md-4 col-lg-2 text-center">
+                                    <img src={{show.imgURL}} alt="poster" class="img-fluid">
+                                    <a href={{show.info_link}}>
+                                        <button class="btn btn-outline-light btn-block mt-1">
+                                            {{show.name}}
+                                        </button></a>
+                                </div>
+                                {% endfor %}  
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            <h2>Recently Favourited Shows</h2>
+                            <form method="POST" action='/modify_list'>
+                                <input type="hidden" name="type" value = "default">
+                                <input type="hidden" name="list_name" value = "Favourite">
                                 <button class="btn btn-outline-light btn-block">
                                     Modify List
                                 </button>
-                            </a>
+                            </form>
                         </div>
+                        <!--Recently Favourited Shows-->
                         <div class="mb-md-5 mt-md-4 pb-5">
                             <div class="row">
-                                {% for show in shows[-10:] %}
+                                {% for show in shows2[-5:] %}
                             
                                 <div class="col-6 col-md-4 col-lg-2 text-center">
                                     <img src={{show.imgURL}} alt="poster" class="img-fluid">

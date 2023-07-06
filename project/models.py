@@ -82,12 +82,12 @@ class User(UserMixin, db.Model):
     
     def getCompleted_List(self):
         for list in self.show_list:
-             if list.type == "default" and list.name == "completed":
+             if list.type == "default" and list.name == "Completed":
                  return list
     
     def getFavourite_List(self):
         for list in self.show_list:
-             if list.type == "default" and list.name == "favourite":
+             if list.type == "default" and list.name == "Favourite":
                  return list
 
     def getShowList(self, type, name):
