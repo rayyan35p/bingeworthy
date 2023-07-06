@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, render_template, request, url_for, flash, session
 from flask_login import login_user, current_user, login_required, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from .models import User, Show , completed_show_list, Rating_Review, favourite_show_list
+from .models import User, Show , show_list, Rating_Review
 from . import db
 from datetime import date
 
@@ -47,8 +47,8 @@ def signup_post():
         return redirect('/signup')
     
     new_user = User(email=email, name=name, password=generate_password_hash(password, method='sha256'))
-    user_list = completed_show_list(user = new_user)
-    fav_list = favourite_show_list(user = new_user)
+    user_list = show_list(user = new_user, type = "default", name = "completed")
+    fav_list = show_list(user = new_user, type = "default", name = "favourite")
     db.session.add(new_user)
     db.session.add(user_list)
     db.session.add(fav_list)
@@ -71,9 +71,9 @@ def profile():
 
     #if user is logged in, return profile page with movies being an array of Movie objects
     if session['user']:
-         shows = currentUser.completed_shows.shows # return an array of movie object
-         print(shows)
-         return render_template('profile.html', shows = shows, currentUser = currentUser)
+        print(currentUser.show_list)
+        shows = currentUser.getCompleted_List().shows # return an array of movie object
+        return render_template('profile.html', shows = shows, currentUser = currentUser)
     
     return render_template('profile.html', currentUser = currentUser)
     
@@ -96,7 +96,8 @@ def add_show():
                        info_link = link, show_type = show_type)
         db.session.add(show)
     
-    currentUser.completed_shows.shows.append(show)
+    print(currentUser.show_list)
+    currentUser.getCompleted_List().shows.append(show)
     db.session.commit()
     
     return redirect('/profile')
@@ -109,7 +110,8 @@ def modify_list():
 
     #if user is logged in, return profile page with movies being an array of Movie objects
     if session['user']:
-         shows = currentUser.completed_shows.shows # return an array of movie object
+         print(currentUser.show_list)
+         shows = currentUser.getCompleted_List().shows # return an array of movie object
          print(shows)
          return render_template('modify.html', shows = shows)
     
@@ -124,8 +126,8 @@ def remove_show():
     id = request.form.get('id')
     show = Show.query.filter_by(show_id = id).first()
     
-    if currentUser.completed_shows.checkShow(show):
-        currentUser.completed_shows.shows.remove(show)
+    if currentUser.getCompleted_List().checkShow(show):
+        currentUser.getCompleted_List().shows.remove(show)
         db.session.commit()
 
     return redirect(request.referrer)

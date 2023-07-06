@@ -13,8 +13,13 @@
         <div class="mb-md-5 mt-md-4 pb-5">
             <div class="row">
                 {% for show in shows %}
-                <div class="col-6 col-md-4 col-lg-2">
+                <div class="col-6 col-md-4 col-lg-2 text-center">
                     <img src={{show.imgURL}} alt="poster" class="img-fluid">
+                    <a href={{show.info_link}}>
+                        <button class="btn btn-outline-light btn-block mt-1">
+                            {{show.name}}
+                        </button>
+                    </a>
                     <form class="form-white form-outline mb-4" method="POST" action="/delete_show">
                         <button type="submit" class="btn btn-outline-light btn-lg px-5 mt-2">Remove</button>
                         <div class="mb-3">

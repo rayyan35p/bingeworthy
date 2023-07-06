@@ -3,7 +3,7 @@ from flask import Blueprint, Flask, redirect, render_template, url_for, request
 import requests
 import json
 from . import db
-from .models import User, Show , completed_show_list, Rating_Review
+from .models import User, Show , show_list, Rating_Review
 
 main = Blueprint('main', __name__)
 

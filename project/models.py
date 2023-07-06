@@ -6,8 +6,8 @@ import requests
 
 
 ## Many to Many relationship between shows and lists
-show_list = db.Table('show_list',
-                      db.Column('list_id', db.Integer, db.ForeignKey('completed_show_list.id')),
+show_list_table = db.Table('show_list_table',
+                      db.Column('list_id', db.Integer, db.ForeignKey('show_list.id')),
                       db.Column('show_id', db.Integer, db.ForeignKey('show.id')))
 
 class Show(db.Model):
@@ -39,34 +39,19 @@ class Show(db.Model):
         return count != 0
 
 
-class completed_show_list(db.Model):
+class show_list(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    type = db.Column(db.String(100)) # custom or default
+    name = db.Column(db.String(100))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    shows = db.relationship('Show', secondary = show_list, backref = 'completed_show_list')
+    shows = db.relationship('Show', secondary = show_list_table, backref = 'show_list')
 
     #Checks if a show is already in the list, takes in an Object of type Show
     #Returns true/false
     def checkShow(self, show):
         if isinstance(show, Show):
             return show in self.shows
-        return False
-    
-## Many to Many relationship between shows and lists
-favourite_list = db.Table('show_list',
-                      db.Column('fav_list_id', db.Integer, db.ForeignKey('favourite_show_list.id')),
-                      db.Column('show_id', db.Integer, db.ForeignKey('show.id')))
-
-class favourite_show_list(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    shows = db.relationship('Show', secondary = favourite_list, backref = 'favourite_show_list')
-
-    #Checks if a show is already in the list, takes in an Object of type Show
-    #Returns true/false
-    def checkShow(self, show):
-        if isinstance(show, Show):
-            return show in self.shows
-        return False
+        return False   
  
 class Rating_Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -90,9 +75,22 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(100))
     password = db.Column(db.String(100))
     ratings_reviews = db.relationship('Rating_Review', backref = 'user')
-    completed_shows = db.relationship('completed_show_list', backref= 'user', lazy = True, uselist=False)
-
+    show_list = db.relationship('show_list', backref= 'user')
     # Returns an array of reviews object [review1, review2,...]
     def getRating_Reviews(self):
         return self.ratings_reviews
+    
+    def getCompleted_List(self):
+        for list in self.show_list:
+             if list.type == "default" and list.name == "completed":
+                 return list
+    
+    def getFavourite_List(self):
+        for list in self.show_list:
+             if list.type == "default" and list.name == "favourite":
+                 return list
 
+    def getShowList(self, type, name):
+        for list in self.show_list:
+             if list.type == type and list.name == name:
+                 return list
