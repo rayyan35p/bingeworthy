@@ -29,6 +29,10 @@ def create_app():
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 
+    # blueprint for social parts
+    from .social import social as social_blueprint
+    app.register_blueprint(social_blueprint)
+
     return app
 
 app = create_app()

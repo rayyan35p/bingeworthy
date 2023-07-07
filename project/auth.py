@@ -106,16 +106,14 @@ def add_show():
     
     return redirect('/profile')
 
-@auth.route('/modify_list', methods=['POST'])
+@auth.route('/modify_list/<string:type>/<string:list_name>')
 @login_required
-def modify_list():
+def modify_list(type, list_name):
     #get User object to reference fields
     currentUser = User.query.filter_by(id = session['user']).first()
 
     #if user is logged in, return profile page with movies being an array of Movie objects
     if session['user']:
-        type = request.form.get('type')
-        list_name = request.form.get('list_name')
         # print(type,list_name)
         shows = currentUser.getShowList(type, list_name).shows # return an array of movie object
         return render_template('modify.html', shows = shows, name = list_name, type = type)
