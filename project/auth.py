@@ -114,6 +114,7 @@ def modify_list(type, list_name):
 
     #if user is logged in, return profile page with movies being an array of Movie objects
     if session['user']:
+
         # print(type,list_name)
         shows = currentUser.getShowList(type, list_name).shows # return an array of movie object
         return render_template('modify.html', shows = shows, name = list_name, type = type)

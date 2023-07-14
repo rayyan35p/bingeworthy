@@ -14,10 +14,7 @@
                 <div class="card-body p-5">
                     <div class="mb-md-5 mt-md-4 pb-5">
                         <h2 class="fw-bold mb-2">
-                            {{current_user.name}}
-                        </h2>
-                        <h2 class="fw-bold mb-2">
-                            {{current_user.email}}
+                            {{profile.name}}
                         </h2>
                     </div>      
                 </div>
@@ -31,11 +28,6 @@
                     <div class="card-body p-5">
                         <div class="row">
                             <h2>Recently Completed Shows</h2>
-                            <a href='/modify_list/default/Completed'>
-                                <button type= "submit" class="btn btn-outline-light btn-block">
-                                    Modify List
-                                </button>
-                            </a>
                         </div>
                         <!--Recently Completed Shows-->
                         <div class="mb-md-5 mt-md-4 pb-5">
@@ -55,11 +47,6 @@
                         </div>
                         <div class="row">
                             <h2>Recently Favourited Shows</h2>
-                            <a href='/modify_list/default/Favourite'>
-                                <button class="btn btn-outline-light btn-block">
-                                    Modify List
-                                </button>
-                            </a>
                         </div>
                         <!--Recently Favourited Shows-->
                         <div class="mb-md-5 mt-md-4 pb-5">
@@ -86,21 +73,15 @@
                     <div class="row">
                         <h2 class = "p-5">Friends</h2>
                     </div>
-                    <form class="d-flex" action="/user_search" method="POST" role="search">
-                        <input class="form-control me-2" name="name" type="search" placeholder="Search Users" aria-label="Search">
-                        <button class="btn btn-outline-danger" type="submit" style="color:rgb(179,0,0);">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </form>
                 </div>
             </div>
         </div>
         <div class="row mt-5">
             <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                <h2 class="p-5">Your Latest Reviews</h2>
+                <h2 class="p-5">Latest Reviews</h2>
                 <div class="card-body p-5">
                         <div class="row">
-                            {% for review in currentUser.getRating_Reviews()[-10:] %}
+                            {% for review in profile.getRating_Reviews()[-10:] %}
                             <div class="card w-100 bg-dark p-5 text-white">
                                 <div class="row mb-5">
                                     <img src={{review.show.imgURL}} alt="poster" class="img" style="width: 10%">

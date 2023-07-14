@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid text-center">
+    <div class="row">
+        {% for user in user_list %}
+        <div class="col-6 col-md-4 col-lg-2">
+        <a class="unlink" href="/profile/{{user.id}}">
+            <img src="https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/v937-aew-139.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=df5cf03ba78dce75d913bb39d9e75a93" class = "img-fluid">
+            <h3 class="text-white">
+                {{user.name}}
+            </h3>
+        </a>
+    </div>
+
+    {% endfor %}
+</div>
+</div>
+    
+{% endblock %}
