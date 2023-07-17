@@ -132,9 +132,17 @@
         </h1>
     </div>
     <div class="card" style="background-color:rgb(8,8,8);">
-        <p class="text-white">
-            Jigokuraku
-        </p>
+        <div class="row">
+            {% for recommendation in recommendations %}
+            <div class="col-6 col-md-4 col-lg-2">
+            {% if recommendation.media_type == "movie" %}
+                <a href="/movie/{{recommendation.id}}"><img src={{recommendation.poster_url}} class = "img-fluid" alt="recommendation"></a>
+            {% else %}
+                <a href="/tv/{{recommendation.id}}"><img src={{recommendation.poster_url}} class = "img-fluid" alt="recommendation"></a>
+            {% endif %}
+            </div>
+            {% endfor %}
+        </div>
     </div>
 </div>
 

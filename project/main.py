@@ -61,6 +61,20 @@ def movie(id):
     payload = {'api_key' : config.api_key}
     r = requests.get('https://api.themoviedb.org/3/movie/' + str(id) , params=payload)
     movie_details = r.json()
+    movie_recommendations = requests.get('https://api.themoviedb.org/3/movie/'  + str(id) + '/recommendations', params=payload)
+    #print(movie_recommendations.json())
+    movie_recommendations_list = movie_recommendations.json().get('results')
+    recommendations_list = []
+    for movie_recommendation in movie_recommendations_list:
+        try:
+            poster_url = "https://image.tmdb.org/t/p/w500" + movie_recommendation.get('poster_path')
+        except:
+            # placeholder url
+            poster_url = "https://image.tmdb.org/t/p/w500/w3rXpniqssYcppC5UwuQfP1scVB.jpg"
+        query = query_results(movie_recommendation.get('id'), movie_recommendation.get('media_type'), poster_url)
+        recommendations_list.append(query)
+        if len(recommendations_list) == 5:
+            break
     try:
         # poster url
         poster_url = "https://image.tmdb.org/t/p/w500" + movie_details.get('poster_path')        
@@ -85,13 +99,27 @@ def movie(id):
     show = Show.query.filter_by(show_id = id).first()
     return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,
                            sypnosis = sypnosis, rating = rating, genres = genres, id = id, link = link, show_type = 0,
-                           show = show)
+                           show = show, recommendations=recommendations_list)
 
 @main.route('/tv/<int:id>')
 def tv(id):
     payload = {'api_key' : config.api_key}
     r = requests.get('https://api.themoviedb.org/3/tv/' + str(id) , params=payload)
     tv_details = r.json()
+    tv_recommendations = requests.get('https://api.themoviedb.org/3/tv/'  + str(id) + '/recommendations', params=payload)
+    # for some reason stranger things has no recommendation; to check
+    tv_recommendations_list = tv_recommendations.json().get('results')
+    recommendations_list = []
+    for tv_recommendation in tv_recommendations_list:
+        try:
+            poster_url = "https://image.tmdb.org/t/p/w500" + tv_recommendation.get('poster_path')
+        except:
+            # placeholder url
+            poster_url = "https://image.tmdb.org/t/p/w500/w3rXpniqssYcppC5UwuQfP1scVB.jpg"
+        query = query_results(tv_recommendation.get('id'), tv_recommendation.get('media_type'), poster_url)
+        recommendations_list.append(query)
+        if len(recommendations_list) == 5:
+            break
     try:
         # poster url
         poster_url = "https://image.tmdb.org/t/p/w500" + tv_details.get('poster_path')        
@@ -117,4 +145,4 @@ def tv(id):
 
     return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,
                            sypnosis = sypnosis, rating = rating, genres = genres, id = id, link = link, show_type = 1,
-                           show = show)
+                           show = show, recommendations=recommendations_list)
