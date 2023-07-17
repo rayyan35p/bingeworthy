@@ -10,9 +10,9 @@
         {% for result in results %}
         <div class="col-6 col-md-4 col-lg-2">
             {% if result.media_type == "movie" %}
-                <a href="/movie/{{result.id}}"><img src={{result.poster_url}} class = "img-fluid" alt="result"></a>
+                <a href="/movie/{{result.id}}"><img src="{{result.poster_url}}" class = "img-fluid" alt="result"></a>
             {% else %}
-                <a href="tv/{{result.id}}"><img src={{result.poster_url}} class = "img-fluid" alt="result"></a>
+                <a href="tv/{{result.id}}"><img src="{{result.poster_url}}" class = "img-fluid" alt="result"></a>
             {% endif %}
         </div>
         {% endfor %}

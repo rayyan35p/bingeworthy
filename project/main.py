@@ -50,8 +50,8 @@ def results():
             poster_url = "https://image.tmdb.org/t/p/w500" + result.get('poster_path')
         except:
             # placeholder url
-            poster_url = "https://image.tmdb.org/t/p/w500/w3rXpniqssYcppC5UwuQfP1scVB.jpg"
-        print(image_url)
+            poster_url = "static/img/no_poster.jpg"
+        print(poster_url)
         query = query_results(result.get('id'), result.get('media_type'), poster_url)
         query_result_list.append(query)
         
@@ -71,7 +71,7 @@ def movie(id):
             poster_url = "https://image.tmdb.org/t/p/w500" + movie_recommendation.get('poster_path')
         except:
             # placeholder url
-            poster_url = "https://image.tmdb.org/t/p/w500/w3rXpniqssYcppC5UwuQfP1scVB.jpg"
+            poster_url = "static/img/no_poster.jpg"
         query = query_results(movie_recommendation.get('id'), movie_recommendation.get('media_type'), poster_url)
         recommendations_list.append(query)
         if len(recommendations_list) == 5:
@@ -81,7 +81,7 @@ def movie(id):
         poster_url = "https://image.tmdb.org/t/p/w500" + movie_details.get('poster_path')        
     except:
         # placeholder url
-        poster_url = "https://image.tmdb.org/t/p/w500/w3rXpniqssYcppC5UwuQfP1scVB.jpg"
+        poster_url = "{{url_for('static', filename='no_poster.jpg')}}"
 
     title = movie_details.get('title')
     # release_date contains a string of year-month-day, 2001-01-01 eg
@@ -116,7 +116,7 @@ def tv(id):
             poster_url = "https://image.tmdb.org/t/p/w500" + tv_recommendation.get('poster_path')
         except:
             # placeholder url
-            poster_url = "https://image.tmdb.org/t/p/w500/w3rXpniqssYcppC5UwuQfP1scVB.jpg"
+            poster_url = "static/img/no_poster.jpg"
         query = query_results(tv_recommendation.get('id'), tv_recommendation.get('media_type'), poster_url)
         recommendations_list.append(query)
         if len(recommendations_list) == 5:
@@ -126,7 +126,7 @@ def tv(id):
         poster_url = "https://image.tmdb.org/t/p/w500" + tv_details.get('poster_path')        
     except:
         # placeholder url
-        poster_url = "https://image.tmdb.org/t/p/w500/w3rXpniqssYcppC5UwuQfP1scVB.jpg"
+        poster_url = "static/img/no_poster.jpg"
 
     title = tv_details.get('name')
     # first_air_date contains a string of year-month-day, 2001-01-01 eg
