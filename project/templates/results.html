@@ -15,8 +15,12 @@
                 <a href="tv/{{result.id}}"><img src={{result.poster_url}} class = "img-fluid" alt="result"></a>
             {% endif %}
         </div>
-
-    {% endfor %}
+        {% endfor %}
+        {% if no_results == 1 %}
+            <div class="text-white">
+                No results found! Please check the spelling. If the spelling is correct, the show may not be on the database.
+            </div>
+        {% endif %}
     </div>
 </div>
     

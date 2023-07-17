@@ -30,7 +30,8 @@ def results():
     payload = {'api_key' : config.api_key, 'query' : query}
     # the request only returns the first page of results... need to figure out a way to get the next pages
     r = requests.get('https://api.themoviedb.org/3/search/multi', params=payload)
-    #print(r.json())
+    if r.json().get('total_results') == 0:
+        return render_template('results.html', no_results=1)
     for value in r.json().get('results'):
         print("id: " + str(value.get('id')))
         # because we are using multi in the api instead of just movies or tv shows,
