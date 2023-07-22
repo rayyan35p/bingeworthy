@@ -10,7 +10,7 @@ social = Blueprint('social', __name__)
 @social.route('/user_search', methods=['POST'])
 def profile_search_results():
     name = request.form['name']
-    name = "%{0}%".format(name)
+    name = "{0}%".format(name)
     user_list = User.query.filter(User.name.like(name)).all()
     print(user_list)
     return render_template('user_search_results.html', user_list = user_list)
