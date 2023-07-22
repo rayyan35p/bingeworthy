@@ -90,12 +90,13 @@ def add_show():
     imgURL = request.form.get('img')
     name = request.form.get('name')
     link = request.form.get('link')
+    genres = request.form.get('genres')
 
     #check if show exists in db, then add show to the list
     show = Show.query.filter_by(show_id = id).first()
     if not show:
         show = Show(imgURL = imgURL, name = name, show_id = id,
-                       info_link = link, show_type = show_type)
+                       info_link = link, show_type = show_type, genres = genres)
         db.session.add(show)
     
     type = request.form.get('type')
@@ -111,7 +112,6 @@ def add_show():
 def modify_list(type, list_name):
     #get User object to reference fields
     currentUser = User.query.filter_by(id = session['user']).first()
-
     #if user is logged in, return profile page with movies being an array of Movie objects
     if session['user']:
 
@@ -152,12 +152,13 @@ def rate_review():
     imgURL = request.form.get('img')
     name = request.form.get('name')
     link = request.form.get('link')
+    genres = request.form.get('genres')
 
     #check if show exists in db, then add show to the list
     show = Show.query.filter_by(show_id = id).first()
     if not show:
         show = Show(imgURL = imgURL, name = name, show_id = id,
-                       info_link = link, show_type = show_type)
+                       info_link = link, show_type = show_type, genres = genres)
         db.session.add(show)
 
     # rating_review information

@@ -94,8 +94,8 @@ def movie(id):
     link = "/movie/" + str(id)
     genres = ""
     for items in genre_list:
-        genres = genres + items.get('name') + " "
-
+        genres = genres + items.get('name') + ", "
+    genres = genres[:-2]
     # Check for Ratings and Reviews by bingeworthy Users
     show = Show.query.filter_by(show_id = id).first()
     return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,

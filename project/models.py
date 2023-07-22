@@ -17,6 +17,8 @@ class Show(db.Model):
     show_type = db.Column(db.Integer)
     show_id = db.Column(db.String(100))
     info_link = db.Column(db.String(100))
+    genres = db.Column(db.String(1000))
+    
     ratings_reviews = db.relationship('Rating_Review', backref = 'show')
 
     # Returns an array of reviews object [review1, review2,...]
@@ -52,6 +54,21 @@ class show_list(db.Model):
         if isinstance(show, Show):
             return show in self.shows
         return False   
+    
+    #returns eg {'fantasy': 2, 'action': 1}
+    def getGenreDictionary(self):
+        dictionary = {}
+        for show in self.shows:
+            genres = show.genres.split(", ")
+            for genre in genres:
+                if genre in dictionary:
+                    dictionary[genre]+=1
+                else:
+                    dictionary[genre]= 1
+        return dictionary
+
+
+
  
 class Rating_Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -94,3 +111,5 @@ class User(UserMixin, db.Model):
         for list in self.show_list:
              if list.type == type and list.name == name:
                  return list
+             
+    
