@@ -174,4 +174,7 @@ def rate_review():
 
     return redirect(request.referrer)
     
-
+@auth.route('/recommend')
+@login_required
+def recommend():
+    return render_template('recommend.html')
