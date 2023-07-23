@@ -83,7 +83,22 @@ def profile():
         return render_template('profile.html', shows = shows, shows2 = shows2, currentUser = currentUser)
     
     return render_template('profile.html', currentUser = currentUser)
+
+
+@auth.route('/editprofile')
+def edit_profile():
+    #get User object to reference fields
+    currentUser = User.query.filter_by(id = session['user']).first()
+    return render_template('edit_profile.html', user = currentUser)
     
+@auth.route('/setname', methods=['POST'])
+def setName():
+    newName = request.form['name']
+    #get User object to reference fields
+    currentUser = User.query.filter_by(id = session['user']).first()
+    currentUser.changeName(newName)
+    return redirect('/profile')
+
 @auth.route('/add_show', methods=['POST'])
 def add_show():
     #get User object to reference fields

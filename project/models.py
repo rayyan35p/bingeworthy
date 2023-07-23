@@ -100,6 +100,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100))
     ratings_reviews = db.relationship('Rating_Review', backref = 'user')
     show_list = db.relationship('show_list', backref= 'user')
+    watching = db.Column(db.String(100))
 
     #followers
     followed = db.relationship(
@@ -141,5 +142,16 @@ class User(UserMixin, db.Model):
     
     def get_all_following(self):
         return self.followed.all()
+    
+    def set_watching(self, name):
+        setattr(self, 'watching', name)
+        db.session.commit()
+
+    def get_watching(self):
+        return self.watching
+    
+    def changeName(self, name):
+        setattr(self, 'name', name)
+        db.session.commit()
              
     

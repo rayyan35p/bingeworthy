@@ -64,3 +64,12 @@ def unfollow_user(id):
 def view_followers():
     currentUser = User.query.filter_by(id = session['user']).first()
     return render_template('view_followers.html', user = currentUser)
+
+@social.route('/setwatching', methods=['POST'])
+def setWatching():
+    watching = request.form['name']
+    print(watching)
+    #get User object to reference fields
+    currentUser = User.query.filter_by(id = session['user']).first()
+    currentUser.set_watching(watching)
+    return redirect('/profile')
