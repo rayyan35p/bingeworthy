@@ -139,7 +139,8 @@ def tv(id):
     link = "/tv/" + str(id)
     genres = ""
     for items in genre_list:
-        genres = genres + items.get('name') + " "
+        genres = genres + items.get('name') + ", "
+    genres = genres[:-2]
 
     # Check for Ratings and Reviews by bingeworthy Users
     show = Show.query.filter_by(show_id = id).first()
