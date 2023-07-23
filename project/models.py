@@ -86,7 +86,11 @@ class Rating_Review(db.Model):
         return [self.rating, self.review, self.user.name, self.date_time]
 
 
-        
+#followers many to many list for users
+followers = db.Table('followers',
+    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+)
 
 # One to One relationship between user and movie_list
 class User(UserMixin, db.Model):
@@ -96,6 +100,14 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100))
     ratings_reviews = db.relationship('Rating_Review', backref = 'user')
     show_list = db.relationship('show_list', backref= 'user')
+
+    #followers
+    followed = db.relationship(
+        'User', secondary=followers,
+        primaryjoin=(followers.c.follower_id == id),
+        secondaryjoin=(followers.c.followed_id == id),
+        backref=db.backref('followers', lazy='dynamic'), lazy='dynamic')
+    
     # Returns an array of reviews object [review1, review2,...]
     def getRating_Reviews(self):
         return self.ratings_reviews
@@ -114,5 +126,17 @@ class User(UserMixin, db.Model):
         for list in self.show_list:
              if list.type == type and list.name == name:
                  return list
+             
+    def follow(self, user):
+        if not self.is_following(user):
+            self.followed.append(user)
+
+    def unfollow(self, user):
+        if self.is_following(user):
+            self.followed.remove(user)
+
+    def is_following(self, user):
+        return self.followed.filter(
+            followers.c.followed_id == user.id).count() > 0
              
     

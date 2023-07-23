@@ -72,6 +72,7 @@ def logout():
 def profile():
     #get User object to reference fields
     currentUser = User.query.filter_by(id = session['user']).first()
+    print(current_user.followed.all())
 
     #if user is logged in, return profile page with movies being an array of Movie objects
     if session['user']:

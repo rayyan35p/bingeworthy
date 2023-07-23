@@ -80,11 +80,22 @@
                     </div>           
                 </div>                 
             </div>
-            <!--Friend List-->
+            <!--Following List-->
             <div class="col-3">
                 <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                    <div class="row">
-                        <h2 class = "p-5">Friends</h2>
+                    <div class="row p-5">
+                        <h2>Following</h2>
+                        {% for user in current_user.followed.all()[-5:] %}
+                        <div class="row">
+                            <a class="unlink" href="/profile/{{user.id}}">
+                                <img src="https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/v937-aew-139.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=df5cf03ba78dce75d913bb39d9e75a93" class = "img-fluid">
+                                <h3 class="text-white text-center">
+                                    {{user.name}}
+                                </h3>
+                            </a>
+                        </div>
+
+                        {% endfor %}
                     </div>
                     <form class="d-flex p-5" action="/user_search" method="POST" role="search">
                         <input class="form-control me-2" name="name" type="search" placeholder="Search Users" aria-label="Search">
