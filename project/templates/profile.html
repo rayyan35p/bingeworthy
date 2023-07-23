@@ -16,7 +16,7 @@
                         <h2 class="fw-bold mb-2">
                             {{current_user.name}}
                         </h2>
-                        <h2 class="fw-bold mb-2">
+                        <h2 class="mb-2">
                             {{current_user.email}}
                         </h2>
                     </div>      
@@ -85,6 +85,11 @@
                 <div class="card bg-dark text-white" style="border-radius: 1rem;">
                     <div class="row p-5">
                         <h2>Following</h2>
+                        <a href='/viewfollowers'>
+                            <button class="btn btn-outline-light btn-block mb-3 mt-1">
+                                View all
+                            </button>
+                        </a>
                         {% for user in current_user.followed.all()[-5:] %}
                         <div class="row">
                             <a class="unlink" href="/profile/{{user.id}}">

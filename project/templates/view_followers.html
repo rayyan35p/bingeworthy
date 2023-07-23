@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Modify List</title>
+{% endblock %}
+
+{% block body %}
+<div class="card bg-dark text-white" style="border-radius: 1rem;"></div>
+    <div class="card-body p-5">
+        <div class="row">
+            <h2 class="text-white">All Followers</h2>
+        </div>
+        <div class="mb-md-5 mt-md-4 pb-5">
+            <div class="row">
+                {% for profile in user.get_all_following() %}
+                <div class="col-6 col-md-4 col-lg-2 text-center">
+                    <a class="unlink" href="/profile/{{user.id}}">
+                        <img src="https://img.rawpixel.com/s3fs-private/rawpixel_images/website_content/v937-aew-139.jpg?w=800&dpr=1&fit=default&crop=default&q=65&vib=3&con=3&usm=15&bg=F4F4F3&ixlib=js-2.2.1&s=df5cf03ba78dce75d913bb39d9e75a93" class = "img-fluid">
+                        <h3 class="text-white">
+                            {{profile.name}}
+                        </h3>
+                    </a>
+                </div>
+                {% endfor %}  
+            </div>
+            
+        </div>
+    </div>     
+</div>      
+
+{% endblock %}

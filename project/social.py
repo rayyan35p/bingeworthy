@@ -59,3 +59,8 @@ def unfollow_user(id):
     db.session.commit()
     #flash('You are unfollowing {}!'.format(user.name))
     return redirect(request.referrer)
+
+@social.route('/viewfollowers')
+def view_followers():
+    currentUser = User.query.filter_by(id = session['user']).first()
+    return render_template('view_followers.html', user = currentUser)

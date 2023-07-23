@@ -128,7 +128,7 @@ class User(UserMixin, db.Model):
                  return list
              
     def follow(self, user):
-        if not self.is_following(user):
+        if not self.is_following(user): 
             self.followed.append(user)
 
     def unfollow(self, user):
@@ -138,5 +138,8 @@ class User(UserMixin, db.Model):
     def is_following(self, user):
         return self.followed.filter(
             followers.c.followed_id == user.id).count() > 0
+    
+    def get_all_following(self):
+        return self.followed.all()
              
     
