@@ -15,7 +15,7 @@
                 <li class="list-group-item">Movies</li>
                 <li class="list-group-item">
                     {% for movie in movie_recommendations %}
-                        <a href="tv/{{movie.id}}"><img src="{{movie.poster_url}}" class = "img-fluid" alt="movie"></a>
+                        <a href="movie/{{movie.id}}"><img src="{{movie.poster_url}}" class = "img-fluid" alt="movie"></a>
                     {% endfor %}
                 </li>
             </ul>

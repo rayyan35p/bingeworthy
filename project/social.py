@@ -22,6 +22,16 @@ def profile_search(id):
     shows2 = profile.getFavourite_List().shows # return an array of movie object
     return render_template('user_search_profile.html', shows = shows, shows2 = shows2, profile = profile)
 
+@social.route('/view_list/<int:id>/<string:type>/<string:list_name>')
+@login_required
+def view_list(id, type, list_name):
+    #get User object to reference fields
+    currentUser = User.query.filter_by(id = id).first()
+    #if user is logged in, return profile page with movies being an array of Movie objects
+    shows = currentUser.getShowList(type, list_name).shows # return an array of movie object
+    return render_template('view_list.html', shows = shows, name = list_name, type = type)
+
+
 @social.route('/follow/<int:id>')
 def follow_user(id):
     user = User.query.filter_by(id=id).first()
