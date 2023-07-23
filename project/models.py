@@ -55,17 +55,20 @@ class show_list(db.Model):
             return show in self.shows
         return False   
     
-    #returns eg {'fantasy': 2, 'action': 1}
-    def getGenreDictionary(self):
-        dictionary = {}
+    #returns eg [fantasy, action, fantasy, animation, ...]
+    def get_genre_list(self):
+        list = []
         for show in self.shows:
             genres = show.genres.split(", ")
             for genre in genres:
-                if genre in dictionary:
-                    dictionary[genre]+=1
-                else:
-                    dictionary[genre]= 1
-        return dictionary
+                    list.append(genre)
+        return list
+    
+    def count(self):
+        number_of_shows = 0
+        for show in self.shows:
+            number_of_shows = number_of_shows + 1
+        return number_of_shows
 
 
 

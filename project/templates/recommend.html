@@ -6,4 +6,30 @@
 
 {% block body %}
 
+<h1 class="d-flex justify-content-center text-white pt-5 mt-5 fs-2">Your Recommendations</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="d-flex col justify-content-center text-white pt-5 mt-5 fs-3">
+            <ul class="list-group">
+                <li class="list-group-item">Movies</li>
+                <li class="list-group-item">
+                    {% for movie in movie_recommendations %}
+                        <a href="tv/{{movie.id}}"><img src="{{movie.poster_url}}" class = "img-fluid" alt="movie"></a>
+                    {% endfor %}
+                </li>
+            </ul>
+        </div>
+        <div class="d-flex col justify-content-center text-white pt-5 mt-5 fs-3">
+            <ul class="list-group">
+                <li class="list-group-item">TV Shows</li>
+                <li class="list-group-item">
+                    {% for tv in tv_recommendations %}
+                        <a href="tv/{{tv.id}}"><img src="{{tv.poster_url}}" class = "img-fluid" alt="tv"></a>
+                    {% endfor %}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 {% endblock %}

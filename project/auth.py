@@ -4,6 +4,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from .models import User, Show , show_list, Rating_Review
 from . import db
 from datetime import date
+from collections import Counter
+import project.config as config
+import requests
+from .main import query_results
 
 auth = Blueprint('auth', __name__)
 
@@ -178,4 +182,57 @@ def rate_review():
 @auth.route('/recommend')
 @login_required
 def recommend():
-    return render_template('recommend.html')
+    #get User object to reference fields
+    currentUser = User.query.filter_by(id = session['user']).first()
+
+    favourites_list = currentUser.getFavourite_List()
+
+    if favourites_list.count() < 5:
+        flash('You need to have at least 5 shows in your favourites list!')
+        return redirect('/')
+
+    common_genres = Counter(favourites_list.get_genre_list()).most_common(3)
+    query_string = ""
+    for genre in common_genres:
+        query_string = query_string + genre[0] + ","
+    query_string = query_string[:-1]
+    
+    payload = {'api_key' : config.api_key, 'with_genres' : query_string}
+    movie_request = requests.get('https://api.themoviedb.org/3/discover/movie', params=payload)
+    tv_request = requests.get('https://api.themoviedb.org/3/discover/tv', params=payload)
+    
+    movie_recommendations_results = movie_request.json().get('results')
+    movie_recommendations_list = []
+    # some shows can have no posters so remember to handle
+    for result in movie_recommendations_results:
+        #needed?
+        image_url = ""
+        try:
+            poster_url = "https://image.tmdb.org/t/p/w185" + result.get('poster_path')
+        except:
+            # placeholder url
+            poster_url = "static/img/no_poster.jpg"
+        print(poster_url)
+        query = query_results(result.get('id'), result.get('media_type'), poster_url)
+        movie_recommendations_list.append(query)
+        if len(movie_recommendations_list) == 3:
+            break
+
+    tv_recommendations_results = tv_request.json().get('results')
+    tv_recommendations_list = []
+    # some shows can have no posters so remember to handle
+    for result in tv_recommendations_results:
+        #needed?
+        image_url = ""
+        try:
+            poster_url = "https://image.tmdb.org/t/p/w185" + result.get('poster_path')
+        except:
+            # placeholder url
+            poster_url = "static/img/no_poster.jpg"
+        print(poster_url)
+        query = query_results(result.get('id'), result.get('media_type'), poster_url)
+        tv_recommendations_list.append(query)
+        if len(tv_recommendations_list) == 3:
+            break
+
+    return render_template('recommend.html', movie_recommendations=movie_recommendations_list, tv_recommendations=tv_recommendations_list)

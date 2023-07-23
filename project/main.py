@@ -45,6 +45,7 @@ def results():
     query_result_list = []
     # some shows can have no posters so remember to handle
     for result in results_list:
+        #needed?
         image_url = ""
         try:
             poster_url = "https://image.tmdb.org/t/p/w500" + result.get('poster_path')
