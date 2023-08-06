@@ -18,6 +18,7 @@ class Show(db.Model):
     show_id = db.Column(db.String(100))
     info_link = db.Column(db.String(100))
     genres = db.Column(db.String(1000))
+    genre_ids = db.Column(db.String(100))
     
     ratings_reviews = db.relationship('Rating_Review', backref = 'show')
 
@@ -62,6 +63,7 @@ class show_list(db.Model):
             genres = show.genres.split(", ")
             for genre in genres:
                     list.append(genre)
+        print(list)
         return list
     
     def count(self):

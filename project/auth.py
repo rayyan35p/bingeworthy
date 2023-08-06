@@ -72,14 +72,11 @@ def logout():
 def profile():
     #get User object to reference fields
     currentUser = User.query.filter_by(id = session['user']).first()
-    print(current_user.followed.all())
 
     #if user is logged in, return profile page with movies being an array of Movie objects
     if session['user']:
-        # print(currentUser.show_list)
         shows = currentUser.getCompleted_List().shows # return an array of movie object
         shows2 = currentUser.getFavourite_List().shows # return an array of movie object
-        # print(currentUser.getCompleted_List())
         return render_template('profile.html', shows = shows, shows2 = shows2, currentUser = currentUser)
     
     return render_template('profile.html', currentUser = currentUser)
@@ -111,17 +108,17 @@ def add_show():
     name = request.form.get('name')
     link = request.form.get('link')
     genres = request.form.get('genres')
+    genre_ids = request.form.get('genre_ids')
 
     #check if show exists in db, then add show to the list
     show = Show.query.filter_by(show_id = id).first()
     if not show:
         show = Show(imgURL = imgURL, name = name, show_id = id,
-                       info_link = link, show_type = show_type, genres = genres)
+                       info_link = link, show_type = show_type, genres = genres, genre_ids = genre_ids)
         db.session.add(show)
     
     type = request.form.get('type')
     list_name = request.form.get('list_name')
-    print(currentUser.show_list)
     currentUser.getShowList(type, list_name).shows.append(show)
     db.session.commit()
     
@@ -134,8 +131,6 @@ def modify_list(type, list_name):
     currentUser = User.query.filter_by(id = session['user']).first()
     #if user is logged in, return profile page with movies being an array of Movie objects
     if session['user']:
-
-        # print(type,list_name)
         shows = currentUser.getShowList(type, list_name).shows # return an array of movie object
         return render_template('modify.html', shows = shows, name = list_name, type = type)
     
@@ -154,8 +149,7 @@ def remove_show():
     if currentUser.getShowList(type, list_name).checkShow(show):
         currentUser.getShowList(type, list_name).shows.remove(show)
         db.session.commit()
-    
-    # print(type,list_name)
+
     shows = currentUser.getShowList(type, list_name).shows # return an array of movie object
     return render_template('modify.html', shows = shows, name = list_name, type = type)
 
@@ -190,9 +184,6 @@ def rate_review():
     userReview = Rating_Review(rating = rating, review = review, user = currentUser, show = show, date_time = date_time)
     db.session.add(userReview)
     db.session.commit()
-    print(userReview.user.name)
-    print(userReview.show.name)
-
     return redirect(request.referrer)
     
 @auth.route('/recommend')
@@ -208,6 +199,7 @@ def recommend():
         return redirect('/')
 
     common_genres = Counter(favourites_list.get_genre_list()).most_common(3)
+    print(common_genres)
     query_string = ""
     for genre in common_genres:
         query_string = query_string + genre[0] + ","
@@ -228,7 +220,6 @@ def recommend():
         except:
             # placeholder url
             poster_url = "static/img/no_poster.jpg"
-        print(poster_url)
         query = query_results(result.get('id'), result.get('media_type'), poster_url)
         movie_recommendations_list.append(query)
         if len(movie_recommendations_list) == 3:
@@ -245,7 +236,6 @@ def recommend():
         except:
             # placeholder url
             poster_url = "static/img/no_poster.jpg"
-        print(poster_url)
         query = query_results(result.get('id'), result.get('media_type'), poster_url)
         tv_recommendations_list.append(query)
         if len(tv_recommendations_list) == 3:

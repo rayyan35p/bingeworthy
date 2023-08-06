@@ -94,14 +94,17 @@ def movie(id):
     id = movie_details.get('id')
     link = "/movie/" + str(id)
     genres = ""
+    genre_ids = ""
     for items in genre_list:
         genres = genres + items.get('name') + ", "
+        genre_ids = genre_ids + str(items.get('id')) + ", "
     genres = genres[:-2]
+    genre_ids = genre_ids[:-2]
     # Check for Ratings and Reviews by bingeworthy Users
     show = Show.query.filter_by(show_id = id).first()
     return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,
                            sypnosis = sypnosis, rating = rating, genres = genres, id = id, link = link, show_type = 0,
-                           show = show, recommendations=recommendations_list)
+                           show = show, recommendations=recommendations_list, genre_ids = genre_ids)
 
 @main.route('/tv/<int:id>')
 def tv(id):
@@ -139,13 +142,16 @@ def tv(id):
     id = tv_details.get('id')
     link = "/tv/" + str(id)
     genres = ""
+    genre_ids = ""
     for items in genre_list:
         genres = genres + items.get('name') + ", "
+        genre_ids = genre_ids + str(items.get('id')) + ", "
     genres = genres[:-2]
+    genre_ids = genre_ids[:-2]
 
     # Check for Ratings and Reviews by bingeworthy Users
     show = Show.query.filter_by(show_id = id).first()
 
     return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,
                            sypnosis = sypnosis, rating = rating, genres = genres, id = id, link = link, show_type = 1,
-                           show = show, recommendations=recommendations_list)
+                           show = show, recommendations=recommendations_list, genre_ids = genre_ids)
