@@ -10,22 +10,22 @@
 
 <div class="container">
     <div class="row">
-        <div class="d-flex col justify-content-center text-white pt-5 mt-5 fs-3">
+        <div class="d-flex col justify-content-center text-white pt-5 pb-5 mt-5 fs-3">
             <ul class="list-group">
-                <li class="list-group-item">Movies</li>
-                <li class="list-group-item">
+                <li class="list-group-item bg-dark text-white">Movies</li>
+                <li class="list-group-item bg-dark">
                     {% for movie in movie_recommendations %}
-                        <a href="movie/{{movie.id}}"><img src="{{movie.poster_url}}" class = "img-fluid" alt="movie"></a>
+                        <a href="movie/{{movie.id}}"><img src="{{movie.poster_url}}" class = "img-fluid mb-3" alt="movie"></a>
                     {% endfor %}
                 </li>
             </ul>
         </div>
-        <div class="d-flex col justify-content-center text-white pt-5 mt-5 fs-3">
+        <div class="d-flex col justify-content-center text-white pt-5 pb-5 mt-5 fs-3">
             <ul class="list-group">
-                <li class="list-group-item">TV Shows</li>
-                <li class="list-group-item">
+                <li class="list-group-item bg-dark text-white">TV Shows</li>
+                <li class="list-group-item bg-dark">
                     {% for tv in tv_recommendations %}
-                        <a href="tv/{{tv.id}}"><img src="{{tv.poster_url}}" class = "img-fluid" alt="tv"></a>
+                        <a href="tv/{{tv.id}}"><img src="{{tv.poster_url}}" class = "img-fluid mb-3" alt="tv"></a>
                     {% endfor %}
                 </li>
             </ul>

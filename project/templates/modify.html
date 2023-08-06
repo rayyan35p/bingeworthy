@@ -14,19 +14,22 @@
             <div class="row">
                 {% for show in shows %}
                 <div class="col-6 col-md-4 col-lg-2 text-center">
-                    <img src={{show.imgURL}} alt="poster" class="img-fluid">
-                    <a href={{show.info_link}}>
-                        <button class="btn btn-outline-light btn-block mt-1">
-                            {{show.name}}
-                        </button></a>
-                    <form class="form-white form-outline mb-4" method="POST" action="/delete_show">
-                        <button type="submit" class="btn btn-outline-light btn-lg px-5 mt-2">Remove</button>
-                        <div class="mb-3">
-                            <input type="hidden" name="id" value = "{{show.show_id}}">
-                            <input type="hidden" name="type" value = "{{type}}">
-                            <input type="hidden" name="list_name" value = "{{name}}">
-                        </div>
-                    </form>
+                    <div class="row d-flex align-items-end">
+                        <img src={{show.imgURL}} alt="poster" class="img-fluid col-12">
+                        <a href={{show.info_link}}>
+                            <button class="btn btn-outline-light btn-block mt-1 col-12 text-truncate">
+                                {{show.name}}
+                            </button></a>
+                        <form class="form-white form-outline mb-4" method="POST" action="/delete_show">
+                            <button type="submit" class="btn btn-outline-light px-5 mt-2 col-12">Remove</button>
+                            <div class="mb-3">
+                                <input type="hidden" name="id" value = "{{show.show_id}}">
+                                <input type="hidden" name="type" value = "{{type}}">
+                                <input type="hidden" name="list_name" value = "{{name}}">
+                            </div>
+                        </form>
+                    </div>
+                    
                 </div>
                 {% endfor %}  
             </div>
