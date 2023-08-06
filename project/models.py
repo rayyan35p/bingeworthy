@@ -56,15 +56,18 @@ class show_list(db.Model):
             return show in self.shows
         return False   
     
-    #returns eg [fantasy, action, fantasy, animation, ...]
-    def get_genre_list(self):
-        list = []
+    #returns eg [[18, 19, ... ], [878, 41, ... ]]
+    def get_genre_lists(self):
+        movie_genre_list = []
+        tv_genre_list = []
         for show in self.shows:
-            genres = show.genres.split(", ")
-            for genre in genres:
-                    list.append(genre)
-        print(list)
-        return list
+            genre_ids = show.genre_ids.split(",")
+            for genre_id in genre_ids:
+                if show.show_type == 0:
+                    movie_genre_list.append(genre_id)
+                else:
+                    tv_genre_list.append(genre_id)
+        return [movie_genre_list, tv_genre_list]
     
     def count(self):
         number_of_shows = 0

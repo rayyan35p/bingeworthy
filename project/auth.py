@@ -109,6 +109,7 @@ def add_show():
     link = request.form.get('link')
     genres = request.form.get('genres')
     genre_ids = request.form.get('genre_ids')
+    print(genre_ids)
 
     #check if show exists in db, then add show to the list
     show = Show.query.filter_by(show_id = id).first()
@@ -193,21 +194,36 @@ def recommend():
     currentUser = User.query.filter_by(id = session['user']).first()
 
     favourites_list = currentUser.getFavourite_List()
+    movie_genre_ids = favourites_list.get_genre_lists()[0]
+    tv_genre_ids = favourites_list.get_genre_lists()[1]
 
-    if favourites_list.count() < 5:
-        flash('You need to have at least 5 shows in your favourites list!')
-        return redirect('/')
+    common_movie_genre_ids = Counter(movie_genre_ids).most_common(3)
+    common_tv_genre_ids = Counter(tv_genre_ids).most_common(3)
 
-    common_genres = Counter(favourites_list.get_genre_list()).most_common(3)
-    print(common_genres)
-    query_string = ""
-    for genre in common_genres:
-        query_string = query_string + genre[0] + ","
-    query_string = query_string[:-1]
+    movie_query_string = ""
+    for genre_id in common_movie_genre_ids:
+        movie_query_string += genre_id[0] + ","
+        print(genre_id)
+    movie_query_string = movie_query_string[:-1]
+    print(movie_query_string)
+
+    tv_query_string = ""
+    for genre_id in common_tv_genre_ids:
+        tv_query_string += genre_id[0] + ","
+        print(genre_id)
+    tv_query_string = tv_query_string[:-1]
+    # print("tv query")
+    # print(tv_query_string)
+
+    # if favourites_list.count() < 5:
+    #     flash('You need to have at least 2 movies and 2 tv shows in your favourites list!')
+    #     return redirect('/')
     
-    payload = {'api_key' : config.api_key, 'with_genres' : query_string}
-    movie_request = requests.get('https://api.themoviedb.org/3/discover/movie', params=payload)
-    tv_request = requests.get('https://api.themoviedb.org/3/discover/tv', params=payload)
+    movie_payload = {'api_key' : config.api_key, 'with_genres' : movie_query_string}
+    movie_request = requests.get('https://api.themoviedb.org/3/discover/movie', params=movie_payload)
+
+    tv_payload = {'api_key' : config.api_key, 'with_genres' : tv_query_string}
+    tv_request = requests.get('https://api.themoviedb.org/3/discover/tv', params=tv_payload)
     
     movie_recommendations_results = movie_request.json().get('results')
     movie_recommendations_list = []

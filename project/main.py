@@ -97,9 +97,9 @@ def movie(id):
     genre_ids = ""
     for items in genre_list:
         genres = genres + items.get('name') + ", "
-        genre_ids = genre_ids + str(items.get('id')) + ", "
+        genre_ids = genre_ids + str(items.get('id')) + ","
     genres = genres[:-2]
-    genre_ids = genre_ids[:-2]
+    genre_ids = genre_ids[:-1]
     # Check for Ratings and Reviews by bingeworthy Users
     show = Show.query.filter_by(show_id = id).first()
     return render_template('showinfo.html', title = title, poster = poster_url, released_date = released_date,
@@ -145,9 +145,9 @@ def tv(id):
     genre_ids = ""
     for items in genre_list:
         genres = genres + items.get('name') + ", "
-        genre_ids = genre_ids + str(items.get('id')) + ", "
+        genre_ids = genre_ids + str(items.get('id')) + ","
     genres = genres[:-2]
-    genre_ids = genre_ids[:-2]
+    genre_ids = genre_ids[:-1]
 
     # Check for Ratings and Reviews by bingeworthy Users
     show = Show.query.filter_by(show_id = id).first()
