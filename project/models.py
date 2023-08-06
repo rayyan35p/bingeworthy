@@ -56,6 +56,12 @@ class show_list(db.Model):
             return show in self.shows
         return False   
     
+    def checkShowID(self, id):
+        for show in self.shows:
+            if show.show_id == str(id): 
+                return True
+        return False   
+    
     #returns eg [[18, 19, ... ], [878, 41, ... ]]
     def get_genre_lists(self):
         movie_genre_list = []

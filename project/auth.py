@@ -178,6 +178,9 @@ def rate_review():
 
     # rating_review information
     rating = request.form.get('rating')
+    # if rating not within 0 to 10:
+    # flash error message and redirect
+    # else create rating review
     review = request.form.get('review')
     date_time = date.today().strftime("%B %d, %Y")
 
@@ -203,14 +206,14 @@ def recommend():
     movie_query_string = ""
     for genre_id in common_movie_genre_ids:
         movie_query_string += genre_id[0] + ","
-        print(genre_id)
+        # print(genre_id)
     movie_query_string = movie_query_string[:-1]
-    print(movie_query_string)
+    # print(movie_query_string)
 
     tv_query_string = ""
     for genre_id in common_tv_genre_ids:
         tv_query_string += genre_id[0] + ","
-        print(genre_id)
+        # print(genre_id)
     tv_query_string = tv_query_string[:-1]
     # print("tv query")
     # print(tv_query_string)
@@ -236,7 +239,11 @@ def recommend():
         except:
             # placeholder url
             poster_url = "static/img/no_poster.jpg"
+        # if query.id is inside user show list continue
+        if currentUser.getCompleted_List().checkShowID(result.get('id')):
+            continue
         query = query_results(result.get('id'), result.get('media_type'), poster_url)
+        
         movie_recommendations_list.append(query)
         if len(movie_recommendations_list) == 3:
             break
@@ -252,6 +259,8 @@ def recommend():
         except:
             # placeholder url
             poster_url = "static/img/no_poster.jpg"
+        if currentUser.getCompleted_List().checkShowID(result.get('id')):
+            continue
         query = query_results(result.get('id'), result.get('media_type'), poster_url)
         tv_recommendations_list.append(query)
         if len(tv_recommendations_list) == 3:
